@@ -146,8 +146,8 @@ void editorRefreshScreen() {
 
   editorDrawRows(&ab);
   abAppend(&ab, "\x1b[H", 3);
-  write(STDOUT_FILENO, ab.b, ab.len);
   abAppend(&ab, "\x1b[?25h", 6);
+  write(STDOUT_FILENO, ab.b, ab.len);
   abFree(&ab);
 }
 
