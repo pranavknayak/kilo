@@ -13,6 +13,14 @@
 #define KILO_VERSION "0.0.1"
 
 /*** data ***/
+
+enum editorKey {
+  ARROW_LEFT = 'a',
+  ARROW_RIGHT = 'd',
+  ARROW_UP = 'w',
+  ARROW_DOWN = 's',
+};
+
 struct termios orig_termios;
 
 struct editorConfig {
@@ -77,13 +85,13 @@ char editorReadKey() {
     if (seq[0] == '[') {
       switch (seq[1]) {
       case 'A':
-        return 'w';
+        return ARROW_UP;
       case 'B':
-        return 's';
+        return ARROW_DOWN;
       case 'C':
-        return 'd';
+        return ARROW_RIGHT;
       case 'D':
-        return 'a';
+        return ARROW_LEFT;
       }
     }
 
@@ -205,16 +213,16 @@ void editorRefreshScreen() {
 
 void editorMoveCursor(char key) {
   switch (key) {
-  case 'a':
+  case ARROW_LEFT:
     E.cx--;
     break;
-  case 'd':
+  case ARROW_RIGHT:
     E.cx++;
     break;
-  case 'w':
+  case ARROW_UP:
     E.cy--;
     break;
-  case 's':
+  case ARROW_DOWN:
     E.cy++;
     break;
   }
