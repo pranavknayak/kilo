@@ -1,4 +1,8 @@
 /*** includes ***/
+#define _DEFAULT_SOURCE
+#define _BSD_SOURCE
+#define _GNU_SOURCE
+
 #include <ctype.h>
 #include <errno.h>
 #include <stdio.h>
@@ -10,6 +14,7 @@
 #include <unistd.h>
 
 /*** defines ***/
+
 #define CTRL_KEY(k) ((k)&0x1f)
 #define KILO_VERSION "0.0.1"
 
@@ -197,7 +202,7 @@ void editorOpen(char *filename) {
   linelen = getline(&line, &linecap, fp);
   if (linelen != -1) {
     while (linelen > 0 &&
-           (line[linelen - 1] == '\n' && line[linelen - 1] == '\r')) {
+           (line[linelen - 1] == '\n' || line[linelen - 1] == '\r')) {
       linelen--;
     }
     E.row.size = linelen;
@@ -238,7 +243,7 @@ void editorDrawRows(struct abuf *ab) {
   int y;
   for (y = 0; y < E.screenrows; y++) {
     if (y >= E.numrows) {
-      if (y == E.screenrows / 3) {
+      if (E.numrows == 0 && y == E.screenrows / 3) {
         char welcome[80];
         int welcomelen = snprintf(welcome, sizeof(welcome),
                                   "Kilo Editor -- Version %s", KILO_VERSION);
